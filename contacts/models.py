@@ -1,7 +1,8 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from localflavor.us.models import USStateField, USZipCodeField
-
+from django.db import models
+from django.db.models import Model
 
 class Contact(models.Model):
     phone_regex = RegexValidator(

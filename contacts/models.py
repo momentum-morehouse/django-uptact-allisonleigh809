@@ -22,3 +22,17 @@ class Contact(models.Model):
     state = USStateField(null=True, blank=True)
     zip_code = USZipCodeField(null=True, blank=True)
     
+class Note(models.Model):
+  contact = models.ForeignKey(Contact, on_delete=models.CASCADE)
+  text = models.TextField(null=True, blank=True)
+  date_added = models.DateTimeField(auto_now_add=True)
+
+ class City(models.Model):
+  name = models.CharField(max_length=225)
+  state = models.CharField(max_length=225)
+  nickname = models.CharField(max_length=225, blank=True, null=True)
+
+  def __str__(self):
+    return f'{self.name}, {self.nickname}'
+
+durm = City.objects.create(name="Atlanta", state = "Georgia", nickname = "The A")

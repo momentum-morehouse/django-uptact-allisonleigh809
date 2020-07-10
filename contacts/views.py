@@ -47,27 +47,44 @@ def delete_contact(request, pk):
     return render(request, "contacts/delete_contact.html",
                   {"contact": contact})
 
-def list_notes(request, pk):
+def contact_detail(request,pk):
   contact = get_object_or_404(Contact, pk=pk)
-  notes = Note.objects.filter(conact=contact)
+  return render(request,"contacts/contact_view.html",          {"contact": contact})
 
-  contact.objects.filter(notes_name='')
-  notes = Note.objects("name")
-  return render(request, "contacts/list_contacts.html",
-         {"notes": notes, "contact":contact})
+def post_note(request,pk):
+    if request.method == 'POST':
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            new_note = form.save(commit=False)
+            new_note.contact_id = pk 
+            new_note.save()
+            return redirect(to='contact_view',pk=pk)
+    else:
+        form = NoteForm()
+    return render(request,  'contacts/notes.html' , {'form': form})
 
 
-def add_NoteForm (request, pk):
-  contact = get_object_or_404(Contact, pk=pk)
-  if request.method == 'GET':
-    form = NoteForm()
+# def list_notes(request, pk):
+#   contact = get_object_or_404(Contact, pk=pk)
+#   notes = Note.objects.filter(conact=contact)
 
-  else:
-    form = NoteForm(data=request.POST)
+#   contact.objects.filter(notes_name='')
+#   notes = Note.objects("name")
+#   return render(request, "contacts/list_contacts.html",
+#          {"notes": notes, "contact":contact})
 
-    if form.is_valid():
 
-        form.save()
-        return redirect(to='contact_detail')
+# def add_NoteForm (request, pk):
+#   contact = get_object_or_404(Contact, pk=pk)
+#   if request.method == 'GET':
+#     form = NoteForm()
+
+#   else:
+#     form = NoteForm(data=request.POST)
+
+#     if form.is_valid():
+
+#         form.save()
+#         return redirect(to='contact_detail')
   
-  return render(request, "contacts/add_note.html", {"form": form, "contact": contact})
+#   return render(request, "contacts/add_note.html", {"form": form, "contact": contact})
